@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using LibraryData;
 using LibraryData.Models;
 using Microsoft.EntityFrameworkCore;
@@ -38,28 +36,42 @@ namespace LibraryServices
 
         public string GetIsbn(int id)
         {
-            if(_context.Books.Any(book=>book.Id==id))
+            if (_context.Books.Any(book => book.Id == id))
             {
-                return  _context.Books
-                    .FirstOrDefault(book=>book.Id==id)
-                    .ISBN;
+                return _context.Books.FirstOrDefault(book => book.Id == id).ISBN;
             }
             else return "";
         }
 
         public string GetTitle(int id)
         {
-            throw new NotImplementedException();
+            return GetById(id).Title;
         }
 
         public string GetType(int id)
         {
-            throw new NotImplementedException();
+            var isBook = _context.
+                LibraryAssets
+                .OfType<Book>().Any(asset => asset.Id == id);
+
+            return isBook ? "Book" : "Video";
         }
 
         public string GetAuthorOrDirector(int id)
         {
-            throw new NotImplementedException();
+            var isBook = _context.
+                LibraryAssets
+                .OfType<Book>().Any(asset => asset.Id == id);
+
+            var isVideo = _context.
+                LibraryAssets
+                .OfType<Video>().Any(asset => asset.Id == id);
+
+            return isBook ?
+                _context.Books.FirstOrDefault(book => book.Id == id).Author :
+                _context.Videos.FirstOrDefault(video => video.Id == id).Director
+                ?? "Unknown";
+
         }
 
         public LibraryAsset GetById(int id)
@@ -68,11 +80,9 @@ namespace LibraryServices
         }
         public string GetDeweyIndex(int id)
         {
-            if(_context.Books.Any(book=>book.Id==id))
+            if (_context.Books.Any(book => book.Id == id))
             {
-                return  _context.Books
-                    .FirstOrDefault(book=>book.Id==id)
-                    .DeweyIndex;
+                return _context.Books.FirstOrDefault(book => book.Id == id).DeweyIndex;
             }
             else return "";
         }

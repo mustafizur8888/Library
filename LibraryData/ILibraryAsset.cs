@@ -13,5 +13,6 @@ namespace LibraryData
         string GetTitle(int id);
         string GetIsbn(int id);
         LibraryBranch GetCurrentLocation(int id);
+        string GetDeweyIndex(int id);
     }
 }

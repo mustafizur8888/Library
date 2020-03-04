@@ -1,4 +1,5 @@
 using LibraryData;
+using LibraryServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,8 @@ namespace Library
             services.AddControllers();
             services.AddDbContext<LibraryContext>(options=>
                 options.UseSqlServer(Configuration.GetConnectionString("LibraryConnection")));
+            services.AddScoped<ILibraryAsset, LibraryAssetService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
